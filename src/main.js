@@ -63,8 +63,9 @@ class DevToyApp {
     const lastTool = preferences.get('lastTool') || 'json';
     this.switchTool(lastTool);
     
+    // TODO: Re-enable PWA features in the future
     // Register service worker for PWA
-    this.registerServiceWorker();
+    // this.registerServiceWorker();
     
     console.log('🛠️ DevToyNative initialized - Your data never leaves your device!');
   }
