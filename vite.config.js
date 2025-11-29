@@ -3,7 +3,7 @@ import wasm from 'vite-plugin-wasm';
 
 export default defineConfig({
   // Base path for GitHub Pages - change 'DevToy' to your repo name
-  base: '/DevToy/',
+  base: '',
   plugins: [wasm()],
   build: {
     target: 'esnext',
