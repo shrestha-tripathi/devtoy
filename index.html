@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DevToyNative - Offline Developer Utilities. Your data never leaves your device." />
+  <meta name="theme-color" content="#0f172a" />
+  
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  
+  <title>DevToyNative - Offline Developer Utilities</title>
+  
+  <!-- Preload critical assets -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="28" height="28" rx="6" stroke="url(#gradient)" stroke-width="2"/>
+            <path d="M10 16h12M16 10v12" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#06b6d4"/>
+                <stop offset="100%" stop-color="#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="logo-text">DevToy<span class="accent">Native</span></span>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+      </div>
+      
+      <nav class="nav-tools">
+        <div class="nav-section">
+          <span class="nav-section-title">Tools</span>
+          <ul class="nav-list" id="navList">
+            <li class="nav-item active" data-tool="json">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+              </svg>
+              <span>JSON Formatter</span>
+              <kbd>1</kbd>
+            </li>
+            <li class="nav-item" data-tool="jwt">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <span>JWT Decoder</span>
+              <kbd>2</kbd>
+            </li>
+            <li class="nav-item" data-tool="regex">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+              <span>Regex Tester</span>
+              <kbd>3</kbd>
+            </li>
+            <li class="nav-item" data-tool="timestamp">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              <span>Unix Time</span>
+              <kbd>4</kbd>
+            </li>
+            <li class="nav-item" data-tool="base64">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+              </svg>
+              <span>Base64</span>
+              <kbd>5</kbd>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="privacy-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>100% Offline</span>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="main-header">
+        <div class="header-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+          <h1 class="tool-title" id="toolTitle">JSON Formatter</h1>
+        </div>
+        <div class="header-actions">
+          <button class="cmd-palette-btn" id="cmdPaletteBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <span>Search tools...</span>
+            <kbd>Ctrl+K</kbd>
+          </button>
+        </div>
+      </header>
+
+      <!-- Tool Container -->
+      <div class="tool-container" id="toolContainer">
+        <!-- Smart Paste Zone (shown initially or when no tool is active) -->
+        <div class="smart-paste-zone" id="smartPasteZone">
+          <div class="paste-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="4" width="32" height="40" rx="4" stroke="url(#pasteGrad)" stroke-width="2"/>
+              <path d="M16 4V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2" stroke="url(#pasteGrad)" stroke-width="2"/>
+              <path d="M24 20v8M20 24h8" stroke="url(#pasteGrad)" stroke-width="2" stroke-linecap="round"/>
+              <defs>
+                <linearGradient id="pasteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#06b6d4"/>
+                  <stop offset="100%" stop-color="#a855f7"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <h2>Smart Paste</h2>
+          <p>Paste any content and we'll auto-detect the format</p>
+          <div class="supported-formats">
+            <span class="format-tag">JSON</span>
+            <span class="format-tag">JWT</span>
+            <span class="format-tag">Base64</span>
+            <span class="format-tag">Unix Timestamp</span>
+            <span class="format-tag">Regex</span>
+          </div>
+          <textarea 
+            class="paste-input" 
+            id="smartPasteInput" 
+            placeholder="Paste content here or press Ctrl+V anywhere..."
+            autofocus
+          ></textarea>
+        </div>
+
+        <!-- Tool Panels (hidden by default, shown when tool is selected) -->
+        <div class="tool-panel" id="jsonPanel" style="display: none;"></div>
+        <div class="tool-panel" id="jwtPanel" style="display: none;"></div>
+        <div class="tool-panel" id="regexPanel" style="display: none;"></div>
+        <div class="tool-panel" id="timestampPanel" style="display: none;"></div>
+        <div class="tool-panel" id="base64Panel" style="display: none;"></div>
+      </div>
+    </main>
+
+    <!-- Command Palette Modal -->
+    <div class="modal-overlay" id="cmdPaletteOverlay">
+      <div class="command-palette" id="commandPalette">
+        <div class="palette-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input 
+            type="text" 
+            class="palette-input" 
+            id="paletteInput" 
+            placeholder="Search tools or type a command..."
+            autocomplete="off"
+          />
+          <kbd>ESC</kbd>
+        </div>
+        <div class="palette-results" id="paletteResults">
+          <div class="palette-section">
+            <span class="palette-section-title">Tools</span>
+            <ul class="palette-list" id="paletteList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
