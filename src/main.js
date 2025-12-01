@@ -399,17 +399,151 @@ class DevToyApp {
   }
   
   /**
-   * Register service worker for PWA
+   * Register service worker for PWA with update handling
    */
   async registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      try {
-        const registration = await navigator.serviceWorker.register('/sw.js');
-        console.log('Service Worker registered:', registration.scope);
-      } catch (error) {
-        console.log('Service Worker registration failed:', error);
-      }
+    if (!('serviceWorker' in navigator)) {
+      console.log('Service Worker not supported');
+      return;
     }
+
+    try {
+      // Determine base path for service worker
+      const basePath = import.meta.env.BASE_URL || '/';
+      const swPath = `${basePath}sw.js`;
+      
+      const registration = await navigator.serviceWorker.register(swPath, {
+        updateViaCache: 'none' // Don't cache the service worker itself
+      });
+      
+      console.log('[App] Service Worker registered:', registration.scope);
+
+      // Check for updates immediately
+      registration.update();
+
+      // Check for updates every 5 minutes
+      setInterval(() => {
+        registration.update();
+      }, 5 * 60 * 1000);
+
+      // Handle updates
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        console.log('[App] New service worker found, installing...');
+
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // New version available
+            console.log('[App] New version available!');
+            this.showUpdateNotification(registration);
+          }
+        });
+      });
+
+      // Handle controller change (when new SW takes over)
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        console.log('[App] New service worker activated, reloading...');
+        window.location.reload();
+      });
+
+    } catch (error) {
+      console.log('[App] Service Worker registration failed:', error);
+    }
+  }
+
+  /**
+   * Show update notification to user
+   */
+  showUpdateNotification(registration) {
+    // Create update banner
+    const banner = document.createElement('div');
+    banner.className = 'update-banner';
+    banner.innerHTML = `
+      <div class="update-banner-content">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+          <path d="M16 21h5v-5"/>
+        </svg>
+        <span>A new version is available!</span>
+        <button class="update-btn" id="updateBtn">Update Now</button>
+        <button class="dismiss-btn" id="dismissBtn">×</button>
+      </div>
+    `;
+    
+    // Add styles
+    const style = document.createElement('style');
+    style.textContent = `
+      .update-banner {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10000;
+        animation: slideUp 0.3s ease;
+      }
+      @keyframes slideUp {
+        from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+        to { transform: translateX(-50%) translateY(0); opacity: 1; }
+      }
+      .update-banner-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #06b6d4, #a855f7);
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(6, 182, 212, 0.3);
+        color: white;
+        font-size: 14px;
+      }
+      .update-banner-content svg {
+        width: 20px;
+        height: 20px;
+      }
+      .update-btn {
+        padding: 6px 16px;
+        background: white;
+        color: #0f172a;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      .update-btn:hover {
+        transform: scale(1.05);
+      }
+      .dismiss-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0.7;
+        padding: 0 4px;
+      }
+      .dismiss-btn:hover {
+        opacity: 1;
+      }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(banner);
+
+    // Handle update button
+    document.getElementById('updateBtn').addEventListener('click', () => {
+      if (registration.waiting) {
+        // Tell the waiting SW to skip waiting and activate
+        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      }
+      banner.remove();
+    });
+
+    // Handle dismiss button
+    document.getElementById('dismissBtn').addEventListener('click', () => {
+      banner.remove();
+    });
   }
 }
 
