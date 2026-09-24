@@ -3,7 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import AppShell from "../components/AppShell.astro";
 import Footer from "../components/Footer.astro";
 import { toolPages, bySlug } from "../data/tools";
-import { absoluteUrl } from "../site.config";
+import { absoluteUrl, lastUpdatedLabel } from "../site.config";
+import { webAppLd } from "../data/geo";
 
 export function getStaticPaths() {
   return toolPages.map((p) => ({ params: { slug: p.slug } }));
@@ -12,7 +13,9 @@ const page = bySlug(Astro.params.slug!)!;
 const path = `/${page.slug}/`;
 const related = page.related.map((s) => bySlug(s)).filter(Boolean);
 
+const tldr = `The ${page.h1} is free, needs no sign-up and runs entirely in your browser. ${page.metaDescription} ${page.tips?.[0] ?? ""}`.trim();
 const jsonLd = [
+  webAppLd({ name: page.h1, description: page.metaDescription, path }),
   {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -38,7 +41,9 @@ const jsonLd = [
   <AppShell mode="tool" active={page.tool} h1={page.h1}>
     <div data-tool-page={page.tool} data-preset={page.preset} hidden></div>
     <article class="seo-content">
+      <p class="tldr"><strong>TL;DR:</strong> {tldr}</p>
       <p>{page.intro}</p>
+      <p class="last-updated">Last updated {lastUpdatedLabel()}</p>
       <h2>How to use the {page.h1}</h2>
       <ol>{page.steps.map((s) => <li>{s}</li>)}</ol>
       {page.tips && page.tips.length > 0 && (
