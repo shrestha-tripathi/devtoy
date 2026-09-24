@@ -1,3 +1,4 @@
+import { extraPages } from "./extra";
 /** Per-tool landing page content. Keys match main.js toolDefinitions. */
 export type ToolKey = "json" | "jwt" | "regex" | "timestamp" | "base64";
 
@@ -18,7 +19,7 @@ export interface ToolPage {
   preset?: string;
 }
 
-export const toolPages: ToolPage[] = [
+const corePages: ToolPage[] = [
   {
     slug: "json-formatter",
     tool: "json",
@@ -160,5 +161,7 @@ export const toolPages: ToolPage[] = [
     related: ["jwt-decoder", "json-formatter"],
   },
 ];
+
+export const toolPages: ToolPage[] = [...corePages, ...extraPages];
 
 export const bySlug = (s: string) => toolPages.find((p) => p.slug === s);
