@@ -3,6 +3,7 @@
  * panel (no logic rewritten) and wires the shared chrome (theme, sidebar).
  */
 import { preferences } from '../utils/storage.js';
+import { registerWebMcpTools } from '../lib/webmcp.js';
 import JsonFormatter from '../tools/jsonFormatter.js';
 import JwtDecoder from '../tools/jwtDecoder.js';
 import RegexTester from '../tools/regexTester.js';
@@ -61,6 +62,7 @@ function init() {
   setupTheme();
   setupSidebar();
   mountTool();
+  registerWebMcpTools();
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
