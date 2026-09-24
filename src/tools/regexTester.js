@@ -15,7 +15,7 @@ import { history, preferences } from '../utils/storage.js';
  * This class provides an abstraction layer for regex operations.
  * It's designed to be swapped with a WASM-based engine when available.
  */
-class RegexEngine {
+export class RegexEngine {
   constructor() {
     this.wasmLoaded = false;
     this.wasmEngine = null;

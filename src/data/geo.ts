@@ -8,6 +8,7 @@ export const homeFaqs = [
   { q: "What is DevToy?", a: "A set of free developer utilities — JSON formatter, JWT decoder, Base64 encoder/decoder, regex tester and Unix timestamp converter — that run entirely in your browser." },
   { q: "What is Smart Paste?", a: "Paste anything onto the page and DevToy detects whether it looks like JSON, a JWT, Base64, a Unix timestamp or a regex, then opens the matching tool with your content loaded." },
   { q: "Is my data sent to a server?", a: "No. All processing is done with JavaScript in your browser tab. The only network requests are for the page itself, web fonts and Google Analytics page-view tracking; the content you paste is not transmitted." },
+  { q: "Is DevToy AI agent ready (WebMCP)?", a: "Yes. In browsers that support WebMCP (navigator.modelContext), DevToy exposes format_json, decode_jwt, base64_encode, base64_decode, test_regex and convert_unix_time as tools an AI agent can call. They run locally in the page using the same logic as the UI." },
   { q: "Is DevToy free?", a: "Yes. Every tool is free to use with no account, and there are no usage limits beyond what your browser can handle." },
 ];
 
