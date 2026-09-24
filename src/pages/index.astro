@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AppShell from "../components/AppShell.astro";
+import Footer from "../components/Footer.astro";
+import { toolPages } from "../data/tools";
+import { site } from "../site.config";
+
+const faqs = [
+  { q: "What is DevToy?", a: "A set of free developer utilities — JSON formatter, JWT decoder, Base64 encoder/decoder, regex tester and Unix timestamp converter — that run entirely in your browser." },
+  { q: "What is Smart Paste?", a: "Paste anything onto the page and DevToy detects whether it looks like JSON, a JWT, Base64, a Unix timestamp or a regex, then opens the matching tool with your content loaded." },
+  { q: "Is my data sent to a server?", a: "No. All processing is done with JavaScript in your browser tab. The only network requests are for the page itself, web fonts and Google Analytics page-view tracking; the content you paste is not transmitted." },
+];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  },
+];
+---
+<Layout path="/" jsonLd={jsonLd}>
+  <AppShell mode="home">
+    <section class="seo-content">
+      <h1>{site.name}: offline developer tools in your browser</h1>
+      <p>{site.description}</p>
+      <h2>Tools</h2>
+      <ul>
+        {toolPages.map((p) => <li><a href={`/${p.slug}/`}>{p.h1}</a> — {p.metaDescription}</li>)}
+      </ul>
+      <h2>FAQ</h2>
+      {faqs.map((f) => (<Fragment><h3>{f.q}</h3><p>{f.a}</p></Fragment>))}
+    </section>
+    <Footer />
+  </AppShell>
+</Layout>
+<script>
+  import "../main.js";
+</script>

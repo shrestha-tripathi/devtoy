@@ -1,0 +1,11 @@
+---
+import { toolPages } from "../data/tools";
+import { site } from "../site.config";
+---
+<footer class="site-footer">
+  <nav aria-label="Tools">
+    <a href="/">All-in-one</a>
+    {toolPages.map((p) => <a href={`/${p.slug}/`}>{p.navLabel}</a>)}
+  </nav>
+  <p>{site.name} runs entirely in your browser. A <a href={site.publisher.url}>{site.publisher.name}</a> project.</p>
+</footer>
