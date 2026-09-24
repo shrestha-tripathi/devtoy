@@ -1,0 +1,65 @@
+/* Styles for the static SEO content blocks + link-based nav on tool pages. */
+a.nav-item { text-decoration: none; }
+a.logo { text-decoration: none; color: inherit; }
+.nav-list li { list-style: none; }
+
+.seo-content {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 8px 24px 48px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 1rem;
+}
+.seo-content h2 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 32px 0 12px;
+}
+.seo-content h3 {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 18px 0 6px;
+}
+.seo-content p, .seo-content li { font-size: 0.95rem; }
+.seo-content ol, .seo-content ul { padding-left: 22px; }
+.seo-content li { margin: 6px 0; }
+.seo-content a { color: var(--accent-cyan, #06b6d4); }
+.seo-content code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  background: var(--bg-glass-hover);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.tldr {
+  border: 1px solid var(--border-color, rgba(148, 163, 184, 0.25));
+  background: var(--bg-glass-hover);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin: 8px 0 16px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+.tldr strong { color: var(--text-primary); }
+.last-updated { font-size: 0.875rem; color: var(--text-secondary); }
+.related-links { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; }
+.related-links li { list-style: none; margin: 0; }
+.related-links a {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color, rgba(148, 163, 184, 0.25));
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+.site-footer {
+  border-top: 1px solid var(--border-color, rgba(148, 163, 184, 0.25));
+  padding: 20px 24px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.site-footer a { color: var(--text-secondary); margin: 0 8px; }

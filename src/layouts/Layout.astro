@@ -1,0 +1,75 @@
+---
+/**
+ * Base layout: <head> (title, meta, canonical, OG, GA4, fonts, JSON-LD) + body slot.
+ * JSON-LD injected via set:html so it is not HTML-escaped.
+ */
+import { site, absoluteUrl } from "../site.config";
+import "../styles/main.css";
+import "../styles/content.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  jsonLd?: Record<string, unknown>[];
+}
+const { title, description, path, jsonLd = [] } = Astro.props;
+const pageTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.tagline}`;
+const pageDescription = description ?? site.description;
+const canonical = absoluteUrl(path ?? Astro.url.pathname);
+
+const sitewide = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: site.publisher.name,
+    url: site.publisher.url,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: site.name,
+    url: absoluteUrl("/"),
+    publisher: { "@type": "Organization", name: site.publisher.name, url: site.publisher.url },
+  },
+];
+const blocks = [...sitewide, ...jsonLd];
+---
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0f172a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <script is:inline>
+      try { var t = JSON.parse(localStorage.getItem('devtoy_theme') || 'null'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${site.gaId}`}></script>
+    <script is:inline define:vars={{ gaId: site.gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', gaId);
+    </script>
+    {blocks.map((b) => <script type="application/ld+json" set:html={JSON.stringify(b)} />)}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

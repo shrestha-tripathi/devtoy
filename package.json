@@ -5,17 +5,18 @@
   "description": "Offline Developer Utilities - Your data never leaves your device",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "npm run build && gh-pages -d dist"
-  },
-  "devDependencies": {
-    "vite": "^5.0.0",
-    "vite-plugin-wasm": "^3.3.0",
-    "gh-pages": "^6.1.1"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
   },
   "dependencies": {
+    "astro": "6.4.4",
     "idb-keyval": "^6.2.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "overrides": {
+    "vite": "7.3.5"
   }
 }
